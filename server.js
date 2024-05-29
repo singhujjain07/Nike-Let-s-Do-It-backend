@@ -4,6 +4,7 @@ import cors from 'cors';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js'
 import productRoutes from './routes/productRoutes.js'
+import orderRoutes from './routes/orderRoutes.js'
 
 // configure env
 dotenv.config();
@@ -21,6 +22,7 @@ app.use(express.json());
 // routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/products',productRoutes)
+app.use('/api/v1/order',orderRoutes)
 
 
 // rest api
