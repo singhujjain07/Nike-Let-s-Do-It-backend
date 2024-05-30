@@ -88,3 +88,22 @@ export const verifyOrderController = async(req,res)=>{
         })
     }
 }
+
+export const getUsersOrdersController = async(req,res)=>{
+    try {
+        const {userId} = req.body;
+        const orders = await orderModel.find({userId:userId}).select("-payment -__v -createdAt -updatedAt");
+        res.status(200).send({
+            success:true,
+            orders,
+            message:"Orders fetched successfully"
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            error,
+            message: 'Error in placing order'
+        })
+    }
+}
