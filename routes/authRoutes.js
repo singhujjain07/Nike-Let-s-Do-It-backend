@@ -1,5 +1,7 @@
 import express from 'express'
 import { loginController, registerController,favoritesController, addressController, addToCartController, updateCartController, removeCartController } from '../controllers/authControllers.js';
+import { isAdmin } from '../middlewares/authMiddlewares.js';
+
 
 // router object
 const router = express.Router();
@@ -20,5 +22,10 @@ router.post('/add-address', addressController)
 router.post('/add-to-cart', addToCartController)
 router.put('/update-cart', updateCartController)
 router.delete('/remove-cart', removeCartController)
+
+// Protected Admin route auth
+router.post('/admin-auth', isAdmin, (req,res)=>{
+    res.status(200).send({ok: true});
+})
 
 export default router;

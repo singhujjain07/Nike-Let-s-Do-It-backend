@@ -1,5 +1,5 @@
 import express from 'express'
-import { createProductController, getProductByIdController, getProductsController, getSingleProductController } from '../controllers/productController.js';
+import { createProductController, getFilteredProductsController, getProductByIdController, getProductSbyColorController, getProductsController, getSingleProductController } from '../controllers/productController.js';
 
 const router = express.Router();
 
@@ -15,5 +15,10 @@ router.get('/get-product/:slug',getSingleProductController)
 
 // get single product
 router.post('/get-single-product',getProductByIdController)
+
+// get products with filter
+router.get('/get-filtered-product',getFilteredProductsController)
+
+router.get('/products',getProductSbyColorController)
 
 export default router

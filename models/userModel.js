@@ -94,7 +94,11 @@ const userSchema = new mongoose.Schema(
             // type: String
         }],
         addresses: [addressSchema],
-        cart: [cartSchema]
+        cart: [cartSchema],
+        role: {
+            type: Boolean,
+            default: false
+        }
     },
     { timestamps: true }
 );

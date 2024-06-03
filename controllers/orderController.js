@@ -2,6 +2,7 @@ import orderModel from "../models/orderModel.js"
 import userModel from '../models/userModel.js'
 import Stripe from "stripe"
 import dotenv from 'dotenv';
+import productModel from "../models/productModel.js";
 
 
 // configure env
@@ -65,6 +66,32 @@ export const verifyOrderController = async(req,res)=>{
         if(success=="true"){
             const order = await orderModel.findById(orderId);
             const user = await userModel.findById(order.userId);
+            if (order) {
+                for (let i of order.items) {
+                    const product = await productModel.findOne({ model: i.name });
+                    if (product) {
+                        let updated = false;
+                        // Define a label for the outer loop
+                        outer: 
+                        for (let color of product.colors) {
+                            if (color.name === i.color) {
+                                color.sizes[i.size]-=i.quantity;
+                                // console.log('Updated product:', product.model, 'Color:', color.name, 'Size:', i.size, 'New Quantity:', color.sizes[i.size]);
+                                updated=true;
+                                break outer;
+                            }
+                        }
+                        if (updated) {
+                            await productModel.findOneAndUpdate(
+                                { _id: product._id },
+                                { $set: { colors: product.colors } },
+                                { new: true, runValidators: true }
+                            );
+                        }
+                        // await product.save(); // Save the product after modifying
+                    }
+                }
+            }
             await userModel.findByIdAndUpdate(user._id,{cart: []})
             await orderModel.findByIdAndUpdate(orderId,{payment: true});
             res.status(200).send({

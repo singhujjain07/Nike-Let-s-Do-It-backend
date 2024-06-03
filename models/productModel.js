@@ -22,6 +22,10 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    threeD:{
+        type: Number,
+        default: 0,
+    }
 },{timestamps: true})
 
 export default mongoose.model("Products",productSchema);
