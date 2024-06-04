@@ -1,5 +1,5 @@
 import express from 'express'
-import { loginController, registerController,favoritesController, addressController, addToCartController, updateCartController, removeCartController } from '../controllers/authControllers.js';
+import { loginController, registerController,favoritesController, addressController, addToCartController, updateCartController, removeCartController, startServerController } from '../controllers/authControllers.js';
 import { isAdmin } from '../middlewares/authMiddlewares.js';
 
 
@@ -27,5 +27,8 @@ router.delete('/remove-cart', removeCartController)
 router.post('/admin-auth', isAdmin, (req,res)=>{
     res.status(200).send({ok: true});
 })
+
+// start server
+router.get('/start-server',startServerController)
 
 export default router;

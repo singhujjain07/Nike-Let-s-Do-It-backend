@@ -224,3 +224,21 @@ export const removeCartController = async(req,res)=>{
         })
     }
 }
+
+// start server 
+export const startServerController = async (req, res) => {
+    try {
+        console.log('Babadon was here');
+        res.status(200).send({
+            success: true,
+            message: 'Server started successfully',
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({
+            success: false,
+            message: 'Error in starting server',
+            error: error.message
+        })
+    }
+}
