@@ -1,5 +1,5 @@
 import express from 'express'
-import { loginController, registerController,favoritesController, addressController, addToCartController, updateCartController, removeCartController, startServerController } from '../controllers/authControllers.js';
+import { loginController, registerController,favoritesController, addressController, addToCartController, updateCartController, removeCartController, startServerController, contactController } from '../controllers/authControllers.js';
 import { isAdmin } from '../middlewares/authMiddlewares.js';
 
 
@@ -30,5 +30,8 @@ router.post('/admin-auth', isAdmin, (req,res)=>{
 
 // start server
 router.get('/start-server',startServerController)
+
+// contact
+router.post('/contact',contactController);
 
 export default router;

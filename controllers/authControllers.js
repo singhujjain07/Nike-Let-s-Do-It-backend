@@ -1,4 +1,5 @@
 import userModel from '../models/userModel.js'
+import contactModel from '../models/contactModel.js'
 import { hashPassword, comparePassword } from '../helpers/authHelper.js'
 import JWT from "jsonwebtoken";
 
@@ -163,9 +164,9 @@ export const addressController = async (req, res) => {
 
 export const addToCartController = async (req, res) => {
     try {
-        const { userId, productId,img, qty, color,size } = req.body;
+        const { userId, productId, img, qty, color, size } = req.body;
         const user = await userModel.findById(userId);
-        user.cart.push({ productId,img, qty, color,size });
+        user.cart.push({ productId, img, qty, color, size });
         await user.save();
         res.status(200).send({
             success: true,
@@ -182,12 +183,12 @@ export const addToCartController = async (req, res) => {
     }
 }
 
-export const updateCartController = async(req,res)=>{
+export const updateCartController = async (req, res) => {
     try {
-        const {userId,cartId,qty} = req.body;
+        const { userId, cartId, qty } = req.body;
         const user = await userModel.findById(userId);
-        const item = user.cart.find(item=> item._id.equals(cartId))
-        item.qty=qty;
+        const item = user.cart.find(item => item._id.equals(cartId))
+        item.qty = qty;
         await user.save();
         res.status(200).send({
             success: true,
@@ -204,9 +205,9 @@ export const updateCartController = async(req,res)=>{
     }
 }
 
-export const removeCartController = async(req,res)=>{
+export const removeCartController = async (req, res) => {
     try {
-        const {userId,cartId} = req.query;
+        const { userId, cartId } = req.query;
         const user = await userModel.findById(userId);
         user.cart = user.cart.filter(item => !item._id.equals(cartId));
         await user.save();
@@ -239,6 +240,26 @@ export const startServerController = async (req, res) => {
             success: false,
             message: 'Error in starting server',
             error: error.message
+        })
+    }
+}
+
+export const contactController = async (req, res) => {
+    try {
+        const { firstname, lastname, company, email, country, phone, message } = req.body
+        const contact = new contactModel({ firstname, lastname, company, email, country, phone, message });
+        await contact.save();
+        res.status(201).send({
+            success: true,
+            contact,
+            message: 'Message sent successfully'
+        })
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            success: false,
+            error,
+            message: 'Error in sending message'
         })
     }
 }
